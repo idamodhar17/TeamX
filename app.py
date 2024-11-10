@@ -9,18 +9,17 @@ app = Flask(__name__)
 app.secret_key = 'sdakq3wjp29q3jerwo349u1205p4ejfoq8234m0nf380623456245njdkfsgh'
 
 # ollama
-ollama.chat(model='llama3.1', messages=None)
+# ollama.chat(model='llama3.1', messages=None)
 
-messages = [
-    {
-        'role': 'system',
-        'content': 'you are an ai based health consultant. we provide you the disease and you will provide consultant based on that '
-    }
-]
-
+# messages = [
+#     {
+#         'role': 'system',
+#         'content': 'you are an ai based health consultant. we provide you the disease and you will provide consultant based on that '
+#     }
+# ]
 
 # Load Model
-with open('../model_2000.pkl', 'rb') as file:
+with open('./model_2000.pkl', 'rb') as file:
     model = pickle.load(file)
 
 # Home Page
@@ -42,11 +41,11 @@ def predict():
     predictions = model.predict(input_data)
     disease = predictions[0]
 
-    ollama_input = [{'role': 'user', 'content': f"the disease is {disease}, age is {age}, weight is {weight}, blood pressure {bloodPressure},height is {height} give health consultant."}]
-    response = ollama.chat(model='llama3.1', messages=ollama_input)
+    # ollama_input = [{'role': 'user', 'content': f"the disease is {disease}, age is {age}, weight is {weight}, blood pressure {bloodPressure},height is {height} give health consultant."}]
+    # response = ollama.chat(model='llama3.1', messages=ollama_input)
 
     # just pass this to index.html
-    print(f"ollama response: {response}") 
+    # print(f"ollama response: {response}") 
 
     return render_template("index.html", disease = disease)
 
