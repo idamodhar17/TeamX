@@ -8,15 +8,15 @@
     <link rel="stylesheet" href="../static/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
 </head>
 
 <body>
     <header>
-        <div class="logo"><img src="../static/images/CareXpert.png" alt=""></div>
+        <div class="logo"><img src="../static/images/CareXpert.png" alt="CareXpert Logo"></div>
         <nav>
-            <a href="#" class="translate-icon"><img src="../static/images/language.png" alt="language feature"></a>
-            <button class="quick-scan-button">Quick Health Scan</button>
+            <a href="#" class="translate-icon" onclick="toggleLanguage(event)"><img src="../static/images/language.png"
+                    alt="language feature"></a>
+            <button class="quick-scan-button"><a href="#btn">Quick Health Scan</a></button>
         </nav>
     </header>
 
@@ -43,7 +43,6 @@
         <div class="doctor-container">
             <img src="../static/images/doc.png" alt="Cartoon Doctor" class="doctor-image">
         </div>
-
         <div class="quote-box">
             <h1>Empowering you with instant insights for a healthier tomorrow.</h1>
         </div>
@@ -51,83 +50,109 @@
 
     <section>
         <div class="sidebar">
-            <form action="/predict" method="post">
+            <form id="healthForm" action="/predict" method="post">
                 <div class="card">
-                    <h2>Height</h2>
-                    <p><label for="height">Enter height in CM</label></p>
+                    <h2 data-en="Height" data-hi="ऊंचाई">Height</h2>
+                    <p><label for="height" data-en="Enter height in CM" data-hi="सेमी में ऊंचाई दर्ज करें">Enter height
+                            in CM</label></p>
                     <div class="inercard">
-                        <input type="number" placeholder="157" id="height" name="height">
-                        <img src="/static/images/healthicons_height (1).png" alt="">
+                        <input type="number" placeholder="157" id="height" name="height" required>
+                        <img src="/static/images/healthicons_height (1).png" alt="Height Icon">
                     </div>
                 </div>
-
                 <div class="card">
-                    <h2>Age</h2>
-                    <p><label for="age">Enter Age</label></p>
+                    <h2 data-en="Age" data-hi="आयु">Age</h2>
+                    <p><label for="age" data-en="Enter Age" data-hi="आयु दर्ज करें">Enter Age</label></p>
                     <div class="inercard">
-                        <input type="number" placeholder="52" id="age" name="age">
-                        <img src="/static/images/healthicons_old-man.png" alt="">
+                        <input type="number" placeholder="52" id="age" name="age" required>
+                        <img src="/static/images/healthicons_old-man.png" alt="Age Icon">
                     </div>
                 </div>
-
                 <div class="card">
-                    <h2>Weight</h2>
-                    <p><label for="weight">Enter Weight KG</label></p>
+                    <h2 data-en="Weight" data-hi="वजन">Weight</h2>
+                    <p><label for="weight" data-en="Enter Weight in KG" data-hi="वजन दर्ज करें (किग्रा में)">Enter
+                            Weight in KG</label></p>
                     <div class="inercard">
-                        <input type="number" placeholder="68" id="weight" name="weight">
-                        <img src="/static/images/icon-park-outline_weight.png" alt="">
+                        <input type="number" placeholder="68" id="weight" name="weight" required>
+                        <img src="/static/images/icon-park-outline_weight.png" alt="Weight Icon">
                     </div>
                 </div>
-
                 <div class="card">
-                    <h2>Blood Pressure</h2>
-                    <p><label for="bloodPressure">Enter Blood Pressure</label></p>
+                    <h2 data-en="Blood Pressure" data-hi="रक्तचाप">Blood Pressure</h2>
+                    <p><label for="bloodPressure" data-en="Enter Blood Pressure" data-hi="रक्तचाप दर्ज करें">Enter Blood
+                            Pressure</label></p>
                     <div class="inercard">
-                        <input type="number" placeholder="95" id="bloodPressure" name="bloodPressure">
-                        <img src="/static/images/Vector.png" alt="">
+                        <input type="number" placeholder="95" id="bloodPressure" name="bloodPressure" required>
+                        <img src="/static/images/Vector.png" alt="Blood Pressure Icon">
                     </div>
                 </div>
-                <button class="btn" type="submit" onclick="startTyping()"
-                    style="height: 30px; border-radius: 5px;">Analyze</button>
-
+                <button class="btn" type="submit" id="btn" style="height: 30px; border-radius: 5px;" data-en="Analyze"
+                    data-hi="विश्लेषण करें">Analyze</button>
             </form>
         </div>
 
-        <!-- Graphs are presented here -->
         <div class="presentation">
             <div class="inerpresentaion">
                 <div class="graph">
-                    <h2>Diagnose Graph</h2>
+                    <h2 data-en="Diagnose Graph" data-hi="निदान ग्राफ">Diagnose Graph</h2>
+                    <svg id="scoreSVG" width="100" height="100" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" stroke="#4CAF50" stroke-width="5" fill="none" />
+                        <text id="scoreText" x="50" y="55" font-size="20" text-anchor="middle" fill="#4CAF50">0</text>
+                    </svg>
                 </div>
                 <div class="Disease">
-                    <h2>Disease</h2>
-                    <p id="Disease">{{ session.disease }}</p>
+                    <h2 data-en="Disease" data-hi="रोग">Disease</h2>
+                    <p id="diseaseOutput" data-en="Awaiting Prediction..." data-hi="पूर्वानुमान की प्रतीक्षा कर रहा है">
+                        Awaiting Prediction...</p>
                 </div>
             </div>
             <div class="AIgenerated">
-                <h3>AI Suggetion</h3>
-                <p><span class="auto-type"></span></p>
+                <h3 data-en="AI Suggestion" data-hi="एआई सुझाव">AI Suggestion</h3>
+                <p><span id="aiSuggestion" class="auto-type" data-en="Your health insights will appear here."
+                        data-hi="आपकी स्वास्थ्य जानकारी यहां दिखाई देगी।">Your health insights will appear here.</span>
+                </p>
             </div>
         </div>
+
     </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-
     <script>
-        function startTyping() {
-            var typed = new Typed(".auto-type", {
-                strings: ["Lorem ipsum dolor sit amet consectetur adipisicing elit. In fuga repudiandae deleniti ea eius animi ipsa ipsam cumque provident enim voluptatem officiis eos excepturi aut cum quia doloribus sint, non, culpa labore. Perferendis quos velit voluptatibus unde iste harum quasi temporibus consectetur, amet, quisquam hic vel tenetur adipisci culpa! Iste."],
-                typeSpeed: 5,
-                backSpeed: 150,
-                looped: true
-            })
+        document.getElementById("healthForm").onsubmit = async function (e) {
+            e.preventDefault();
+
+            generateRandomScore();
+
+            const formData = new FormData(this);
+            const response = await fetch("/predict", {
+                method: "POST",
+                body: formData
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById("diseaseOutput").innerText = `Predicted Disease: ${data.disease}`;
+                document.getElementById("aiSuggestion").innerText = data.suggestion || "No suggestion available.";
+            } else {
+                document.getElementById("diseaseOutput").innerText = "Error: Unable to predict.";
+            }
+        };
+
+        function generateRandomScore() {
+            const score = Math.floor(Math.random() * 40) + 60;
+            document.getElementById("scoreText").textContent = score;
         }
-    </script>
 
-    <script>
-        document.querySelector('.translate-icon').addEventListener('click', () => {
-            alert("Language switch coming soon!");
-        });
+        function toggleLanguage(event) {
+            event.preventDefault();
+            const elements = document.querySelectorAll('[data-en]');
+            const isEnglish = document.documentElement.lang === 'en';
+
+            elements.forEach(el => {
+                el.textContent = isEnglish ? el.getAttribute('data-hi') : el.getAttribute('data-en');
+            });
+
+            document.documentElement.lang = isEnglish ? 'hi' : 'en';
+        }
 
     </script>
 </body>

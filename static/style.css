@@ -37,9 +37,11 @@ nav a, .quick-scan-button {
     font-size: 20px;
     color: #000;
     text-decoration: none;
+    z-index: 1;
 }
 
 .translate-icon img {
+    
     width: 25px;
 }
 
@@ -163,8 +165,8 @@ main {
 
     .quick-scan-button {
         display: block;
-        padding: 6px 10px;
-        font-size: 12px;
+        padding: 2px 5px;
+        font-size: 8px;
     }
 
     .background-text {
@@ -176,7 +178,7 @@ main {
 section {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 300px;
+    margin-top: 40px;
 }
 
 .sidebar {
@@ -403,4 +405,8 @@ section {
     inset: 0;
     font-size: 16px;
     font-weight: bold;
+}
+
+#scoreSVG {
+    margin: 5px;
 }
