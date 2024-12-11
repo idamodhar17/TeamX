@@ -1,5 +1,4 @@
 # General Disease Diagnosis AI Web App
-## By, Team X
 
 <img src="Notebook/image/imagelogo.jpg">
 
