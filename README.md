@@ -66,7 +66,3 @@ Figma for making UI : <a href="https://www.figma.com/design/X9P0KHfyvrPQg8RFRLYU
 
 ## About Predicted Data
 The predicted data is stored in `Notebook` -> `data`. The are 5 prediction done using different parameters of model.
-
-## UI
-
-Figma : https://www.figma.com/design/X9P0KHfyvrPQg8RFRLYU6X/Team-X?node-id=5-4&t=2rpt78N99yJ9FEoi-0
